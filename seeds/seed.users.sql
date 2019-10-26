@@ -1,10 +1,10 @@
 -- first remove any data that may be present
-TRUNCATE folder_name RESTART IDENTITY CASCADE;
+TRUNCATE users RESTART IDENTITY CASCADE;
 
 -- insert some suppliers
 INSERT INTO users
-  (folder_name)
+  (email, user_password)
   VALUES
-    ('Important'),
-    ('Spangley'),
-    ('Super');
+    ('joe@smith.com', 'pass1'),
+    ('hikes@nps.org', 'pass2'),
+    ('elCap@example.com', 'pass3');

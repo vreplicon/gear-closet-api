@@ -28,11 +28,25 @@ const GearService = {
         .delete()
     },
   
-    updateUser(knex, id, newGearFields) {
+    updateGear(knex, id, newGearFields) {
       return knex('gear')
         .where({ id })
         .update(newGearFields)
     },
+
+    getByUser(knex, userId) {
+        return knex('gear')
+        .select('*')
+        .where('user_id', userId)
+    },
+
+    getByList(knex, listId) {
+        return knex('gear').join('gear_list_lookup', 'gear.id', '=', 'gear_list_lookup.gear_id')
+        .select('*')
+        .where('list_id', listId)
+        
+    },
+
   }
   
   module.exports = GearService

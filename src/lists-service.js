@@ -33,6 +33,19 @@ const ListsService = {
         .where({ id })
         .update(newListFields)
     },
+
+    getGearForList(knex, id) {
+        return knex('gear').join('gear_list_lookup', 'gear.id', '=', 'gear_list_lookup.gear_id')
+        .select('*')
+        .where('list_id', id)
+        
+    },
+
+    getByUser(knex, userId) {
+        return knex('lists')
+        .select('*')
+        .where('user_id', userId)
+    }
   }
   
   module.exports = ListsService

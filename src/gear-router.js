@@ -11,7 +11,7 @@ const jsonParser = express.json()
 //   folder_name : xss(folder.folder_name)
 // })
 
-foldersRouter
+gearRouter
   .route('/')
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
@@ -100,4 +100,4 @@ foldersRouter
       .catch(next)
   })
 
-module.exports = foldersRouter
+module.exports = gearRouter

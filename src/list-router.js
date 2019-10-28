@@ -1,7 +1,8 @@
 const path = require('path')
 const express = require('express')
 const xss = require('xss')
-const ListsService = require('./gear-service')
+const ListsService = require('./lists-service')
+const GearService = require('./gear-service')
 
 const listRouter = express.Router()
 const jsonParser = express.json()
@@ -12,19 +13,19 @@ const jsonParser = express.json()
 // })
 
 listRouter
-  .route('/')
+  .route('/user/:user_id')
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
-    ListsService.getAllFolders(knexInstance)
+    ListsService.getAllLists(knexInstance)
       .then(lists => {
-          res.json(lists)
+        res.json(lists)
         // res.json(folders.map(serializeFolder))
       })
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    const { folder_name } = req.body
-    const newFolder = { folder_name }
+    const { list_name, description, gear } = req.body
+    const newList = { list_name, description, gear }
 
     for (const [key, value] of Object.entries(newFolder)) {
       if (value == null) {
@@ -34,7 +35,7 @@ listRouter
       }
     }
 
-    ListsService.insertGear(
+    ListsService.insertList(
       req.app.get('db'),
       newList
     )
@@ -47,7 +48,7 @@ listRouter
       .catch(next)
   })
 
-foldersRouter
+listRouter
   .route('/:list_id')
   .all((req, res, next) => {
     ListsService.getById(
@@ -57,7 +58,7 @@ foldersRouter
       .then(list => {
         if (!list) {
           return res.status(404).json({
-            error: { message: `Folder doesn't exist` }
+            error: { message: `List doesn't exist` }
           })
         }
         res.list = list
@@ -66,12 +67,13 @@ foldersRouter
       .catch(next)
   })
   .get((req, res, next) => {
-    res.json(serializeFolder(res.folder))
+      res.json(res.list)
+    // res.json(serializeFolder(res.list))
   })
   .delete((req, res, next) => {
-    FoldersService.deleteFolder(
+    ListService.deleteList(
       req.app.get('db'),
-      req.params.folder_id
+      req.params.list_id
     )
       .then(numRowsAffected => {
         res.status(204).end()
@@ -79,21 +81,21 @@ foldersRouter
       .catch(next)
   })
   .patch(jsonParser, (req, res, next) => {
-    const { folder_name} = req.body
-    const folderToUpdate = { folder_name }
+    const { list_name, description, gear} = req.body
+    const listToUpdate = { list_name, description, gear }
 
-    const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length
+    const numberOfValues = Object.values(listToUpdate).filter(Boolean).length
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must contain 'folder_name'`
+          message: `Request body must contain 'list_name', 'description', or 'gear`
         }
       })
 
-    FoldersService.updateFolder(
+    ListsService.updateList(
       req.app.get('db'),
-      req.params.folder_id,
-      folderToUpdate
+      req.params.list_id,
+      listToUpdate
     )
       .then(numRowsAffected => {
         res.status(204).end()
@@ -101,4 +103,4 @@ foldersRouter
       .catch(next)
   })
 
-module.exports = foldersRouter
+module.exports = listRouter

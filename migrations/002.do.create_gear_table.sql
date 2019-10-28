@@ -5,5 +5,5 @@ CREATE TABLE gear (
   gear_type TEXT NOT NULL,
   gear_weight FLOAT,
   weight_unit TEXT,
-  notes TEXT,
+  notes TEXT
 );

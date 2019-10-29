@@ -34,7 +34,7 @@ lookupRouter
       }
     }
 
-    LookupService.insertLookup(
+    LookupService.addNewLookup(
       req.app.get('db'),
       newLookup
     )

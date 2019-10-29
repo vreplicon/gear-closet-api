@@ -6,6 +6,8 @@ const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const listRouter = require('./list-router')
 const lookupRouter = require('./lookup-router')
+const gearRouter = require('./gear-router')
+const {CLIENT_ORIGIN} = require('./config')
 
 const app = express()
 
@@ -15,7 +17,14 @@ const morganOption = (NODE_ENV === 'production')
 
 app.use(morgan(morganOption))
 app.use(helmet())
-app.use(cors())
+
+
+
+app.use(
+    cors({
+        origin: CLIENT_ORIGIN
+    })
+)
 
 app.get('/', (req,res) => {
     res.send('Hello, world!')
@@ -23,6 +32,7 @@ app.get('/', (req,res) => {
 
 app.use('/api/lists', listRouter)
 app.use('/api/lookup', lookupRouter)
+app.use('/api/gear', gearRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response

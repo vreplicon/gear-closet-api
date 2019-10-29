@@ -23,11 +23,14 @@ listRouter
       })
       .catch(next)
   })
+  
+listRouter
+  .route('/')
   .post(jsonParser, (req, res, next) => {
-    const { list_name, description, gear } = req.body
-    const newList = { list_name, description, gear }
+    const { list_name, list_description, user_id } = req.body
+    const newList = { list_name, list_description, user_id }
 
-    for (const [key, value] of Object.entries(newFolder)) {
+    for (const [key, value] of Object.entries(newList)) {
       if (value == null) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` }
@@ -35,7 +38,7 @@ listRouter
       }
     }
 
-    ListsService.insertList(
+    ListsService.addNewList(
       req.app.get('db'),
       newList
     )

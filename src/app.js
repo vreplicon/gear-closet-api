@@ -34,7 +34,7 @@ app.get('/', (req,res) => {
 app.use('/api/lists', listRouter)
 app.use('/api/lookup', lookupRouter)
 app.use('/api/gear', gearRouter)
-app.use('/api/auth', authRouter)
+// app.use('/api/auth', authRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response

@@ -7,6 +7,7 @@ const { NODE_ENV } = require('./config')
 const listRouter = require('./list-router')
 const lookupRouter = require('./lookup-router')
 const gearRouter = require('./gear-router')
+const authRouter = require('./auth-router')
 const {CLIENT_ORIGIN} = require('./config')
 
 const app = express()
@@ -33,6 +34,7 @@ app.get('/', (req,res) => {
 app.use('/api/lists', listRouter)
 app.use('/api/lookup', lookupRouter)
 app.use('/api/gear', gearRouter)
+app.use('/api/auth', authRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response

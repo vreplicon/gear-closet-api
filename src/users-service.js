@@ -33,6 +33,14 @@ const UsersService = {
         .where({ id })
         .update(newUserFields)
     },
+
+    getCredentialsByEmail(knex, email) {
+        return knex
+        .from('users')
+        .select('id, password')
+        .where({email})
+        .first()
+    }
   }
   
   module.exports = UsersService

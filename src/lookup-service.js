@@ -4,9 +4,11 @@ const LookupService = {
         return knex.select('*').from('gear_lists_lookup')
       },
 
-    addNewLookup(knex, newLookup) {
+    addNewLookup(knex, gear, list) {
+        const fieldsToInsert = gear.map(g => 
+            ({ user_id: 1, gear_id: g.id, list_id: list.id })); 
       return knex
-        .insert(newLookup)
+        .insert(fieldsToInsert)
         .into('gear_lists_lookup')
         .returning('*')
         .then(rows => {

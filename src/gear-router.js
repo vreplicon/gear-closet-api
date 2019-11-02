@@ -48,6 +48,18 @@ gearRouter
         .catch(next)
     })
 
+    gearRouter
+        .route('/user/:user_id')
+        .get((req, res, next) => {
+            const knexInstance = req.app.get('db')
+            GearService.getByUser(knexInstance, req.params.user_id)
+              .then(gear => {
+                  res.json(gear)
+                // res.json(folders.map(serializeFolder))
+              })
+              .catch(next)
+          })
+
     // foldersRouter
     // .route('/:folder_id')
     // .all((req, res, next) => {

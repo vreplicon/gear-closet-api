@@ -2,32 +2,31 @@ const path = require('path')
 const express = require('express')
 const xss = require('xss')
 const ListsService = require('./lists-service')
-const GearService = require('./gear-service')
+const LookupService = require('./lookup-service')
 
 const listRouter = express.Router()
 const jsonParser = express.json()
 
-// const serializeFolder = folder => ({
-//   id: folder.id,
-//   folder_name : xss(folder.folder_name)
-// })
+
 
 listRouter
   .route('/user/:user_id')
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
-    ListsService.getAllLists(knexInstance)
+        ListsService.getListsWithGear(knexInstance, req.params.user_id)
       .then(lists => {
-        res.json(lists)
-        // res.json(folders.map(serializeFolder))
-      })
+           const grouped = ListsService.groupLists(lists)
+ 
+        res.json(grouped)  
+}
+      )
       .catch(next)
   })
   
 listRouter
   .route('/')
   .post(jsonParser, (req, res, next) => {
-    const { list_name, list_description, user_id } = req.body
+    const { list_name, list_description, user_id, gear } = req.body
     const newList = { list_name, list_description, user_id }
 
     for (const [key, value] of Object.entries(newList)) {
@@ -42,6 +41,7 @@ listRouter
       req.app.get('db'),
       newList
     )
+        .then(list => LookupService.addNewLookup(req.app.get('db'), gear, list))
       .then(list => {
         res
           .status(201)

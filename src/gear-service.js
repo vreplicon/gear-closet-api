@@ -40,10 +40,10 @@ const GearService = {
         .where('user_id', userId)
     },
 
-    getIdsByList(knex, listId) {
-        // return knex('gear').join('gear_list_lookup', 'gear.id', '=', 'gear_list_lookup.gear_id')
-        return knex('gear_list_lookup')
-        .select('gear_id')
+    getGearByList(knex, listId) {
+        return knex.from('gear').join('gear_lists_lookup', 'gear.id', '=', 'gear_lists_lookup.gear_id')
+        // return knex('gear_list_lookup')
+        .select('*')
         .where('list_id', listId)
         
     },

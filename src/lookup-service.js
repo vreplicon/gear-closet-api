@@ -30,10 +30,20 @@ const LookupService = {
         .delete()
     },
   
-    updateLookup(knex, id, newLookupFields) {
+    updateListLookup(knex, list_id, gearIds) {
+      const fieldsToInsert = gearIds.map(g => 
+        ({gear_id: g, list_id: list_id })); 
+        console.log(fieldsToInsert)
       return knex('gear_lists_lookup')
-        .where({ id })
-        .update(newLookupFields)
+        .where({ list_id })
+        .delete()
+        .then(knex
+          .insert(fieldsToInsert)
+        .into('gear_lists_lookup')
+        .returning('*')
+        .then(rows => {
+          console.log(rows)
+        }))
     },
 
     getByUser(knex, userId) {

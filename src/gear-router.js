@@ -60,58 +60,58 @@ gearRouter
               .catch(next)
           })
 
-    // foldersRouter
-    // .route('/:folder_id')
-    // .all((req, res, next) => {
-    //     FoldersService.getById(
-    //     req.app.get('db'),
-    //     req.params.folder_id
-    //     )
-    //     .then(folder => {
-    //         if (!folder) {
-    //         return res.status(404).json({
-    //             error: { message: `Folder doesn't exist` }
-    //         })
-    //         }
-    //         res.folder = folder
-    //         next()
-    //     })
-    //     .catch(next)
-    // })
-    // .get((req, res, next) => {
-    //     res.json(serializeFolder(res.folder))
-    // })
-    // .delete((req, res, next) => {
-    //     FoldersService.deleteFolder(
-    //     req.app.get('db'),
-    //     req.params.folder_id
-    //     )
-    //     .then(numRowsAffected => {
-    //         res.status(204).end()
-    //     })
-    //     .catch(next)
-    // })
-    // .patch(jsonParser, (req, res, next) => {
-    //     const { folder_name} = req.body
-    //     const folderToUpdate = { folder_name }
+    gearRouter
+    .route('/:gear_id')
+    .all((req, res, next) => {
+        GearService.getById(
+        req.app.get('db'),
+        req.params.gear_id
+        )
+        .then(gear => {
+            if (!gear) {
+            return res.status(404).json({
+                error: { message: `Gear doesn't exist` }
+            })
+            }
+            res.gear = gear
+            next()
+        })
+        .catch(next)
+    })
+    .get((req, res, next) => {
+        // res.json(serializeFolder(res.folder))
+    })
+    .delete((req, res, next) => {
+        GearService.deleteGear(
+        req.app.get('db'),
+        req.params.gear_id
+        )
+        .then(numRowsAffected => {
+            res.status(204).end()
+        })
+        .catch(next)
+    })
+    .patch(jsonParser, (req, res, next) => {
+        const {user_id, gear_name, gear_type, gear_weight, weight_unit, notes } = req.body
+        const gearToUpdate = { user_id, gear_name, gear_type, gear_weight, weight_unit, notes }
 
-    //     const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length
-    //     if (numberOfValues === 0)
-    //     return res.status(400).json({
-    //         error: {
-    //         message: `Request body must contain 'folder_name'`
-    //         }
-    //     })
+        const numberOfValues = Object.values(gearToUpdate).filter(Boolean).length
+        if (numberOfValues === 0)
+        return res.status(400).json({
+            error: {
+            message: `Request body must contain user_id, gear_name, gear_type, gear_weight, weight_unit, or notes`
+            }
+        })
 
-    //     FoldersService.updateFolder(
-    //     req.app.get('db'),
-    //     req.params.folder_id,
-    //     folderToUpdate
-    //     )
-    //     .then(numRowsAffected => {
-    //         res.status(204).end()
-    //     })
-    //     .catch(next)
-    // })
+        GearService.updateGear(
+        req.app.get('db'),
+        req.params.gear_id,
+        gearToUpdate
+        )
+        .then(numRowsAffected => {
+            res.status(204).end()
+        })
+        .catch(next)
+    })
 
 module.exports = gearRouter

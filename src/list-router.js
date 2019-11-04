@@ -13,7 +13,7 @@ listRouter
   .route('/user/:user_id')
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
-        ListsService.getListsWithGear(knexInstance, req.params.user_id)
+      ListsService.getListsWithGear(knexInstance, req.params.user_id)
       .then(lists => {
            const grouped = ListsService.groupLists(lists)
  
@@ -74,7 +74,7 @@ listRouter
     // res.json(serializeFolder(res.list))
   })
   .delete((req, res, next) => {
-    ListService.deleteList(
+    ListsService.deleteList(
       req.app.get('db'),
       req.params.list_id
     )
@@ -84,16 +84,26 @@ listRouter
       .catch(next)
   })
   .patch(jsonParser, (req, res, next) => {
-    const { list_name, description, gear} = req.body
-    const listToUpdate = { list_name, description, gear }
+    const { list_name, list_description, user_id, gear} = req.body
+    const reqFields = { list_name, list_description, user_id, gear }
+    const listToUpdate = {list_name, list_description, user_id}
 
-    const numberOfValues = Object.values(listToUpdate).filter(Boolean).length
-    if (numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain 'list_name', 'description', or 'gear`
-        }
-      })
+    // const numberOfValues = Object.values(reqFields).filter(Boolean).length
+    // if (numberOfValues === 0)
+    //   return res.status(400).json({
+    //     error: {
+    //       message: `Request body must contain 'list_name', 'description', or 'gear`
+    //     }
+    //   })
+
+    if (gear) {
+      console.log("Here")
+      LookupService.updateListLookup(
+        req.app.get('db'),
+        req.params.list_id,
+        gear
+      )
+    }
 
     ListsService.updateList(
       req.app.get('db'),

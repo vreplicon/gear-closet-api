@@ -34,10 +34,10 @@ const UsersService = {
         .update(newUserFields)
     },
 
-    getCredentialsByEmail(knex, email) {
+    getIdByEmail(knex, email) {
         return knex
         .from('users')
-        .select('id, password')
+        .select('id')
         .where({email})
         .first()
     }

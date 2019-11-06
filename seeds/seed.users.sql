@@ -3,8 +3,8 @@ TRUNCATE users RESTART IDENTITY CASCADE;
 
 -- insert some suppliers
 INSERT INTO users
-  (email, user_password)
+  (email)
   VALUES
-    ('joe@smith.com', 'pass1'),
-    ('hikes@nps.org', 'pass2'),
-    ('elCap@example.com', 'pass3');
+    ('joe@smith.com'),
+    ('hikes@nps.org'),
+    ('elCap@example.com');

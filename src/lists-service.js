@@ -70,7 +70,6 @@ const ListsService = {
             }
             
             for(let i = 0; i < lists.length; i++) {
-                console.log(`LIST ID = ${lists[i].id} OTHER ${x.list_id}`)
                 if (lists[i].id === x.list_id) {
                     lists[i].gear.push(x.gear_id)
                 }

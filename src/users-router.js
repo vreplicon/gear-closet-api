@@ -6,11 +6,6 @@ const UsersService = require('./users-service')
 const usersRouter = express.Router()
 const jsonParser = express.json()
 
-
-
-
-  
-
 usersRouter
   .route('/sign-in')
   .all(jsonParser, (req, res, next) => {

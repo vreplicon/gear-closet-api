@@ -6,10 +6,15 @@ const GearService = require('./gear-service')
 const gearRouter = express.Router()
 const jsonParser = express.json()
 
-// const serializeFolder = folder => ({
-//   id: folder.id,
-//   folder_name : xss(folder.folder_name)
-// })
+const serializeGear = gear => ({
+  id: gear.id,
+  user_id : gear.user_id,
+  gear_name : xss(gear.gear_name),
+  gear_type : gear.gear_type,
+  gear_weight : gear.gear_weight,
+  weight_unit : gear.weight_unit,
+  notes : xss(gear.notes)
+})
 
 gearRouter
   .route('/')
@@ -17,17 +22,17 @@ gearRouter
     const knexInstance = req.app.get('db')
     GearService.getAllGear(knexInstance)
       .then(gear => {
-          res.json(gear)
-        // res.json(folders.map(serializeFolder))
+        //   res.json(gear)
+        res.json(gear.map(serializeGear))
       })
       .catch(next)
   })
     .post(jsonParser, (req, res, next) => {
         const { user_id, gear_name, gear_type, gear_weight, weight_unit, notes } = req.body
         const newGear = { user_id, gear_name, gear_type, gear_weight, weight_unit, notes }
-        const requireFields = {user_id, gear_name, gear_type}
+        const requiredFields = {user_id, gear_name, gear_type}
 
-        for (const [key, value] of Object.entries(requireFields)) {
+        for (const [key, value] of Object.entries(requiredFields)) {
         if (value == null) {
             return res.status(400).json({
             error: { message: `Missing '${key}' in request body` }
@@ -54,8 +59,8 @@ gearRouter
             const knexInstance = req.app.get('db')
             GearService.getByUser(knexInstance, req.params.user_id)
               .then(gear => {
-                  res.json(gear)
-                // res.json(folders.map(serializeFolder))
+                //   res.json(gear)
+                res.json(gear.map(serializeGear))
               })
               .catch(next)
           })

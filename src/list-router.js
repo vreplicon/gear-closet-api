@@ -7,7 +7,12 @@ const LookupService = require('./lookup-service')
 const listRouter = express.Router()
 const jsonParser = express.json()
 
-
+const serializeList = list => ({
+  id: list.id,
+  list_name : xss(list.list_name),
+  list_description : xss(list.list_description),
+  gear : list.gear
+})
 
 listRouter
   .route('/user/:user_id')
@@ -70,8 +75,8 @@ listRouter
       .catch(next)
   })
   .get((req, res, next) => {
-      res.json(res.list)
-    // res.json(serializeFolder(res.list))
+      // res.json(res.list)
+    res.json(serializeList(res.list))
   })
   .delete((req, res, next) => {
     ListsService.deleteList(

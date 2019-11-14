@@ -46,12 +46,14 @@ listRouter
       req.app.get('db'),
       newList
     )
-        .then(list => LookupService.addNewLookup(req.app.get('db'), gear, list))
-      .then(list => {
+      .then(list => res.list = list)
+      .then(() => res.list.gear = gear)
+        .then(() => LookupService.addNewLookup(req.app.get('db'), gear, res.list))
+      .then(() => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${list.id}`))
-          .json(list)
+          .location(path.posix.join(req.originalUrl, `/${res.list.id}`))
+          .json(res.list)
       })
       .catch(next)
   })

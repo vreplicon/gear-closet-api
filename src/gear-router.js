@@ -18,15 +18,15 @@ const serializeGear = gear => ({
 
 gearRouter
   .route('/')
-  .get((req, res, next) => {
-    const knexInstance = req.app.get('db')
-    GearService.getAllGear(knexInstance)
-      .then(gear => {
-        //   res.json(gear)
-        res.json(gear.map(serializeGear))
-      })
-      .catch(next)
-  })
+//   .get((req, res, next) => {
+//     const knexInstance = req.app.get('db')
+//     GearService.getAllGear(knexInstance)
+//       .then(gear => {
+//         //   res.json(gear)
+//         res.json(gear.map(serializeGear))
+//       })
+//       .catch(next)
+//   })
     .post(jsonParser, (req, res, next) => {
         const { user_id, gear_name, gear_type, gear_weight, weight_unit, notes } = req.body
         const newGear = { user_id, gear_name, gear_type, gear_weight, weight_unit, notes }
@@ -83,9 +83,9 @@ gearRouter
         })
         .catch(next)
     })
-    .get((req, res, next) => {
-        // res.json(serializeFolder(res.folder))
-    })
+    // .get((req, res, next) => {
+    //     // res.json(serializeFolder(res.folder))
+    // })
     .delete((req, res, next) => {
         GearService.deleteGear(
         req.app.get('db'),

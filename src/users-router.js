@@ -58,7 +58,7 @@ usersRouter
                 req.app.get('db'),
                 newUser
             ).then(newUser => 
-                res.json(newUser)
+                res.status(201).json(newUser)
             ).catch(next)
         }   
     

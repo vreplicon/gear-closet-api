@@ -6,7 +6,7 @@ const LookupService = {
 
     addNewLookup(knex, gear, list) {
         const fieldsToInsert = gear.map(g => 
-            ({ user_id: 1, gear_id: g.id, list_id: list.id })); 
+            ({gear_id: g.id, list_id: list.id })); 
       return knex
         .insert(fieldsToInsert)
         .into('gear_lists_lookup')

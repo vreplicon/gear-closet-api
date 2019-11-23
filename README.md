@@ -1,26 +1,66 @@
-# Express Boilerplate!
+# Gear Closet API
 
-This is a boilerplate project used for starting new projects!
+## Summary
+Simplify planning your next adventure by using Gear Closet. With this app you can store the information 
+for all of your gear in one place and easily put together a list of all of the things you want to bring
+on your next big trip.
 
-## Set up
+## Live Demo
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+https://gear-closet.vreplicon.now.sh/
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+## Front End Repo
 
-## Scripts
+https://github.com/vreplicon/gear-closet
 
-Start the application `npm start`
+## API Endpoints
 
-Start nodemon for the application `npm run dev`
+### /api/users/sign-up
 
-Run the tests `npm test`
+A POST request to this endpoint will create a new user and return the credentials for that user
 
-## Deploying
+### /api/users/sign-in
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+A POST request to this endpoint will get the user id for the given email
+
+### /api/gear
+
+This endpoint handles the gear database
+
+Use a POST request to add a new piece of gear with the new gear in the body of the request
+
+#### /api/gear/gearId
+
+Use a DELETE request to remove a piece of gear with the specified id from the database
+
+#### /api/gear/user/userId
+
+Use a GET request to get all of the pieces of gear belonging to the user with the given user id
+
+### /api/lists
+
+This endpoint handles the list database
+
+Use a POST request to add a new list with the new list in the body of the request
+
+#### /api/lists/listId
+
+Use a DELETE request to remove a list with the specified id from the database
+
+#### /api/lists/user/userId
+
+Use a GET request to get all of lists belonging to the user with the given user id
+
+## Technologies Used
+
+### Front End
+
+React  
+
+### Backend
+
+Node.js, Express
+
+### Testing
+
+Chai, Supertest, Mocha
